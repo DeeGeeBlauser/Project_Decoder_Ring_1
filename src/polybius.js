@@ -8,7 +8,8 @@ const polybiusModule = (function () {
     f: 12,
     g: 22,
     h: 32,
-    "(i/j)": 42,
+    i: 42,
+    j: 42,
     k: 52,
     l: 13,
     m: 23,
@@ -57,21 +58,17 @@ const polybiusModule = (function () {
 
   //helper function to encode messages from letters to numbers
   function _encoder(input) {
-    let encodeArr = [];
-    for (let char of input) {
-      let lowerChar = char.toLowerCase();
-      //accounting for special case of 'i' and 'j' as they are a shared key
-      if (lowerChar === "i" || lowerChar === "j") {
-        encodeArr.push("42");
-        //checking to ensure the current character is alphabetic
-      } else if (lowerChar.match(/[a-z]/)) {
-        encodeArr.push(encodeAlphabet[lowerChar]);
-        //accounting for any non-alphabetic character and pushing them to encodeArr
-      } else {
-        encodeArr.push(lowerChar);
-      }
-    }
-    return encodeArr.join("");
+    return (encodeMessage = input
+      .toLowerCase()
+      .split("")
+      .reduce((acc, letter) => {
+        if (letter.match(/[a-z]/)) {
+          acc += encodeAlphabet[letter];
+        } else {
+          acc += letter;
+        }
+        return acc;
+      }, ""));
   }
 
   //helper function to decode from numbers to letters

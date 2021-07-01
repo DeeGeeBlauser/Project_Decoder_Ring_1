@@ -22,38 +22,38 @@ const substitutionModule = (function () {
   function _encoder(input, alphabet) {
     if (_alphabetChecker(alphabet) === false) return false;
     const encoderArray = alphabet.split("");
-    let encodedMessage = "";
-    for (let i = 0; i < input.length; i++) {
-      let lowerChar = input[i].toLowerCase();
-      if (ORIGINAL_ALPHABET.includes(lowerChar)) {
-        let originalIndex = ORIGINAL_ALPHABET.indexOf(lowerChar);
-        let encodedLetter = encoderArray[originalIndex];
-        encodedMessage += encodedLetter;
-      } else {
-        //accounting for spaces and special characters present in the input
-        encodedMessage += lowerChar;
-      }
-    }
-    return encodedMessage;
+    return (encodedMessage = input
+      .toLowerCase()
+      .split("")
+      .reduce((acc, letter) => {
+        if (ORIGINAL_ALPHABET.includes(letter)) {
+          let originalIndex = ORIGINAL_ALPHABET.indexOf(letter);
+          let encodedLetter = encoderArray[originalIndex];
+          acc += encodedLetter;
+        } else {
+          acc += letter;
+        }
+        return acc;
+      }, ""));
   }
 
   //helper function used to decode messages
   function _decoder(input, alphabet) {
     if (_alphabetChecker(alphabet) === false) return false;
     const decoderArray = alphabet.split("");
-    let decodedMessage = "";
-    for (let i = 0; i < input.length; i++) {
-      let lowerChar = input[i].toLowerCase();
-      if (decoderArray.includes(lowerChar)) {
-        let originalIndex = decoderArray.indexOf(lowerChar);
-        let decodedLetter = ORIGINAL_ALPHABET[originalIndex];
-        decodedMessage += decodedLetter;
-      } else {
-        //accounting for spaces and special characters present in the input
-        decodedMessage += lowerChar;
-      }
-    }
-    return decodedMessage;
+    return (decodedMessage = input
+      .toLowerCase()
+      .split("")
+      .reduce((acc, letter) => {
+        if (decoderArray.includes(letter)) {
+          let originalIndex = decoderArray.indexOf(letter);
+          let decodedLetter = ORIGINAL_ALPHABET[originalIndex];
+          acc += decodedLetter;
+        } else {
+          acc += letter;
+        }
+        return acc;
+      }, ""));
   }
 
   function substitution(input, alphabet, encode = true) {
